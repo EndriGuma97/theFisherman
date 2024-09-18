@@ -84,7 +84,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Error reading file2 CSV", http.StatusInternalServerError)
         return
     }
-	w.Header().Set("Contenct-Type", "text/csv")
+	w.Header().Set("Content-Type", "text/csv")
 	w.Header().Set("Content-Disposition", "attachment;filename=ActiveLeadsNotInCRM.csv")
 	writer := csv.NewWriter(w)
 	header := []string{"Employee ID", "GEID", "HR/Owner", "%", "Store", "First Name", "Last Name", "Street", "City", "State", "Zip Code", "Phone", "Home Phone", "Email", "DoB", "Emergency Contact", "Status", "Code", "Agent", "Batch Date", "NOTES", "Organization Start Date", "Job Title", "Job Title Code", "Internal Email", "Internal Email Password", "Program ID", "CVT URL"}
