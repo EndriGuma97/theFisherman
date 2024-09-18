@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Fisherman</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f0f4f8;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+      }
+      h1 {
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #333;
+      }
+      .file-upload {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 500;
+        color: #555;
+      }
+      input[type="file"] {
+        display: none;
+      }
+      .custom-file-upload {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-block;
+        transition: background-color 0.3s;
+      }
+      .custom-file-upload:hover {
+        background-color: #0056b3;
+      }
+      .button-container {
+        margin-top: 20px;
+      }
+      button {
+        background-color: #28a745;
+        color: white;
+        font-size: 18px;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #218838;
+      }
+      .file-name {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>The Fisherman</h1>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <div class="file-upload">
+          <label for="file1">Upload CRM File</label>
+          <label for="file1" class="custom-file-upload"> Choose File </label>
+          <input
+            id="file1"
+            type="file"
+            name="file1"
+            onchange="updateFileName('file1', 'file1-name')"
+            required
+          />
+          <div id="file1-name" class="file-name">No file chosen</div>
+        </div>
+
+        <div class="file-upload">
+          <label for="file2">Upload WRADMIN File</label>
+          <label for="file2" class="custom-file-upload"> Choose File </label>
+          <input
+            id="file2"
+            type="file"
+            name="file2"
+            onchange="updateFileName('file2', 'file2-name')"
+            required
+          />
+          <div id="file2-name" class="file-name">No file chosen</div>
+        </div>
+
+        <div class="button-container">
+          <button type="submit">Upload Files</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      function updateFileName(inputId, fileNameId) {
+        const input = document.getElementById(inputId);
+        const fileNameDisplay = document.getElementById(fileNameId);
+        fileNameDisplay.textContent =
+          input.files.length > 0 ? input.files[0].name : "No file chosen";
+      }
+    </script>
+  </body>
+</html>
