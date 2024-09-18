@@ -29,6 +29,7 @@
         max-width: 500px;
         width: 100%;
         text-align: center;
+        display: none; /* Hide content initially */
       }
       h1 {
         font-weight: 600;
@@ -81,10 +82,23 @@
         font-size: 14px;
         color: #777;
       }
+      .password-container {
+        text-align: center;
+        max-width: 300px;
+        margin: 0 auto;
+      }
     </style>
   </head>
   <body>
-    <div class="container">
+    <!-- Password prompt -->
+    <div class="password-container">
+      <h1>Enter Password</h1>
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="checkPassword()">Submit</button>
+    </div>
+
+    <!-- Protected content -->
+    <div class="container" id="content">
       <h1>The Fisherman</h1>
       <form action="/upload" method="POST" enctype="multipart/form-data">
         <div class="file-upload">
@@ -120,6 +134,74 @@
     </div>
 
     <script>
+      // Base64 encoded password for obfuscation
+      const encodedPassword = "c2VjcmV0cGFzc3dvcmQ="; // Base64 for "secretpassword"
+      const timeoutDuration = 1200000; // 10 minutes in milliseconds
+
+      // Function to check password
+      function checkPassword() {
+        const userPassword = document.getElementById("password").value;
+        const decodedPassword = atob(encodedPassword);
+
+        if (userPassword === decodedPassword) {
+          // Hide the password container and show content
+          document.querySelector(".password-container").style.display = "none";
+          document.getElementById("content").style.display = "block";
+
+          // Store the current time in localStorage
+          localStorage.setItem("lastAuthTime", Date.now().toString());
+
+          // Set a timeout to enforce re-entry after 10 minutes
+          setTimeout(enforcePassword, timeoutDuration);
+        } else {
+          alert("Incorrect password!");
+        }
+      }
+
+      // Function to enforce password prompt after 10 minutes
+      function enforcePassword() {
+        alert("Session expired. Please enter the password again.");
+        document.querySelector(".password-container").style.display = "block";
+        document.getElementById("content").style.display = "none";
+      }
+
+      // Disable right-click and certain key combinations
+      document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+      });
+
+      document.onkeydown = function (e) {
+        // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        if (
+          e.keyCode == 123 ||
+          (e.ctrlKey && e.shiftKey && e.keyCode == 73) || // Ctrl+Shift+I
+          (e.ctrlKey && e.shiftKey && e.keyCode == 74) || // Ctrl+Shift+J
+          (e.ctrlKey && e.keyCode == 85) // Ctrl+U
+        ) {
+          return false;
+        }
+      };
+
+      // Check on page load whether 10 minutes have passed
+      window.onload = function () {
+        const lastAuthTime = localStorage.getItem("lastAuthTime");
+        if (lastAuthTime) {
+          const currentTime = Date.now();
+          const timeElapsed = currentTime - parseInt(lastAuthTime, 10);
+
+          if (timeElapsed < timeoutDuration) {
+            // If less than 10 minutes have passed, automatically show the content
+            document.querySelector(".password-container").style.display =
+              "none";
+            document.getElementById("content").style.display = "block";
+
+            // Set a new timeout to enforce the password prompt again
+            setTimeout(enforcePassword, timeoutDuration - timeElapsed);
+          }
+        }
+      };
+
+      // Function to update file name display
       function updateFileName(inputId, fileNameId) {
         const input = document.getElementById(inputId);
         const fileNameDisplay = document.getElementById(fileNameId);
