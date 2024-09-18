@@ -49,7 +49,7 @@ var WRAdminLeads []WRAdminLead
 func main() {
 	http.HandleFunc("/", formHandler)
 	http.HandleFunc("/upload", uploadHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":80", nil))
 }
 func formHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("index.html"))
