@@ -49,7 +49,7 @@ var WRAdminLeads []WRAdminLead
 func main() {
 	http.HandleFunc("/", formHandler)
 	http.HandleFunc("/upload", uploadHandler)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 func formHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("index.html"))
@@ -151,6 +151,8 @@ func readCSVforWR(file io.Reader) (error) {
 		if err != nil {
 			return err
 		}
+		if strings.TrimSpace(record[16]) == "2" {
+
 		found := 0
 		foundOwner := 0
 		for _, val := range CRMLeads {
@@ -208,6 +210,7 @@ func readCSVforWR(file io.Reader) (error) {
 			}) 
 		}
 
-	}
+	}			
+}
 	return nil
 }
